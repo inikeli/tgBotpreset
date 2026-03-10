@@ -27,7 +27,7 @@ async def gpt(bot,message):
 
 @bot.on_message(filters.command("games") | button_filter(keyboard.btn_games))
 async def games(bot,message):
-    await message.reply(f'Тут будут игры')
+    await message.reply(f'Тут будут игры',reply_markup=keyboard.kb_games)
 
 @bot.on_message(filters.command("start"))
 async def start(bot,message):

@@ -14,3 +14,14 @@ kb_main = ReplyKeyboardMarkup(
     ],
     resize_keyboard=True
 )
+
+btn_fishing = KeyboardButton(f'{emoji.FISH} Рыбалочка')
+btn_randomCords = KeyboardButton(f'{emoji.GLOBE_SHOWING_EUROPE_AFRICA} Случайные координаты')
+btn_back = KeyboardButton(f'{emoji.BACK_ARROW} Назад')
+
+kb_games = ReplyKeyboardMarkup(
+    keyboard=[
+    [btn_fishing,btn_randomCords,btn_back],
+],
+    resize_keyboard=True
+)
