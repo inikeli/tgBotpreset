@@ -8,8 +8,27 @@ bot = Client(
     bot_token=config.BOT_TOKEN,
     name = "my_bot"
 )
+def button_filter(button):
+    async  def func(_,__,msg):
+        return msg.text == button.text
+    return filters.create(func,"ButtonFilter", button=button)
 
-    
+@bot.on_message(filters.command("info") | button_filter(keyboard.btn_info))
+async def info(bot,message):
+    await message.reply("Привет, Этот бот для доброты")
+
+@bot.on_message(filters.command("profile") | button_filter(keyboard.btn_profile))
+async def profile(bot,message):
+    await message.reply(f'Ваш id {message.chat.id} , Ваше имя {message.from_user.first_name}')
+
+@bot.on_message(filters.command("gpt") | button_filter(keyboard.btn_gpt))
+async def gpt(bot,message):
+    await message.reply(f'Тут будет ГПТ')
+
+@bot.on_message(filters.command("games") | button_filter(keyboard.btn_games))
+async def games(bot,message):
+    await message.reply(f'Тут будут игры')
+
 @bot.on_message(filters.command("start"))
 async def start(bot,message):
     await message.reply("Добро пожаловать!",reply_markup=keyboard.kb_main)
