@@ -1,3 +1,4 @@
+import random
 import config
 from pyrogram import Client ,filters
 import keyboard
@@ -9,7 +10,7 @@ bot = Client(
     name = "my_bot"
 )
 def button_filter(button):
-    async  def func(_,__,msg):
+    async def func(_,__,msg):
         return msg.text == button.text
     return filters.create(func,"ButtonFilter", button=button)
 
@@ -32,7 +33,32 @@ async def games(bot,message):
 @bot.on_message(filters.command("start"))
 async def start(bot,message):
     await message.reply("Добро пожаловать!",reply_markup=keyboard.kb_main)
-    await bot.send_photo(message.chat.id,"https://belkniga.by/upload/resize_cache/iblock/98e/c3u0azr6p2d48nitjsfxb7wot31p1h9z/350_350_17626458c13eabe00cfe36870533c95c9/obzh-5-kl-rabochaya-tetrad.jpg")
+
+@bot.on_message(filters.command("fish") | button_filter(keyboard.btn_fishing))
+async def fish(bot,message):
+    await message.reply(f'Рыбалка')
+
+@bot.on_message(filters.command("back") | button_filter(keyboard.btn_back))
+async def back(bot,message):
+    await message.reply(reply_markup=keyboard.kb_main)
+
+@bot.on_message(filters.command("maps") | button_filter(keyboard.btn_randomCords))
+async def maps(bot,message):
+    preset = "https://www.google.com/maps/@"
+    degrees = random.randint(-90,90)
+    preset = preset + str(degrees)+"."
+    for i in range(7):
+        number = random.randint(0,10)
+        preset = preset+str(number)
+    preset = preset + ","
+    degrees = random.randint(-180, 180)
+    preset = preset + str(degrees) + "."
+    for i in range(7):
+        number = random.randint(0,10)
+        preset = preset+str(number)
+    preset = preset + ",10z"
+    await message.reply(preset)
+
 @bot.on_message()
 async def echo(bot,message):
     if message.text == "Привет":
