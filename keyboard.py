@@ -24,3 +24,23 @@ kb_games = ReplyKeyboardMarkup(
 ],
     resize_keyboard=True
 )
+btn_startFishing = KeyboardButton(f'{emoji.FISHING_POLE} Начать рыбалку')
+btn_shopFishing = KeyboardButton(f'{emoji.SHOPPING_BAGS} Магазин')
+btn_backGame = KeyboardButton(f'{emoji.BACK_ARROW} Назад')
+
+kb_fish = ReplyKeyboardMarkup(
+    keyboard=[
+        [btn_startFishing,btn_shopFishing,btn_backGame],
+    ],
+      resize_keyboard=True
+)
+
+btn_casting = KeyboardButton(f'{emoji.NATIONAL_PARK} Рыбачить')
+btn_catch = KeyboardButton(f'{emoji.HANDBAG} Улов')
+btn_backFishing = KeyboardButton(f'{emoji.BACK_ARROW} Назад')
+kb_gaming = ReplyKeyboardMarkup(
+    keyboard=[
+        [btn_casting,btn_catch,btn_backFishing],
+    ],
+    resize_keyboard=True
+)

@@ -2,6 +2,7 @@ import random
 import config
 from pyrogram import Client ,filters
 import keyboard
+from keyboard import kb_fish
 
 bot = Client(
     api_id=config.API_ID,
@@ -36,11 +37,23 @@ async def start(bot,message):
 
 @bot.on_message(filters.command("fish") | button_filter(keyboard.btn_fishing))
 async def fish(bot,message):
-    await message.reply(f'Рыбалка')
+    await message.reply(f'Рыбалка',reply_markup=kb_fish)
 
 @bot.on_message(filters.command("back") | button_filter(keyboard.btn_back))
 async def back(bot,message):
-    await message.reply(reply_markup=keyboard.kb_main)
+    await message.reply("Возврат назад", reply_markup=keyboard.kb_main)
+
+@bot.on_message(button_filter(keyboard.btn_startFishing))
+async def start_fishing(bot,message):
+    await message.reply("Игра запущена",reply_markup=keyboard.kb_gaming)
+
+@bot.on_message(button_filter(keyboard.btn_shopFishing))
+async def shop_fishing(bot,message):
+    await message.reply("Рыбацкий магазинчик",reply_markup=keyboard.kb_fishingShop)
+
+@bot.on_message(button_filter(keyboard.btn_backGame))
+async def backToGame(bot,message):
+    await message.reply("Возвращаемся в меню игр",reply_markup=keyboard.kb_games)
 
 @bot.on_message(filters.command("maps") | button_filter(keyboard.btn_randomCords))
 async def maps(bot,message):
