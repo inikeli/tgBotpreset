@@ -3,7 +3,32 @@ import config
 from pyrogram import Client ,filters
 import keyboard
 from keyboard import kb_fish
+import sqlite3
 
+conn = sqlite3.connect('fishing_game.bd')
+cursor = conn.cursor()
+
+cursor.execute('''
+    CREATE TABLE IF NOT EXISTS fishing_log (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    fisherman TEXT NOT NULL,
+    rod_type TEXT NOT NULL,
+    weight REAL
+    )
+''')
+
+conn.commit()
+
+fish_dictionary = {
+    "Карась": (18,50,1000),#(шанс, мин, макс)
+    "Окунь": (15,20,500),
+    "Лещ": (13,100,1700),
+    "Голавль": (7,100,2500),
+    "Сом": (10,500,25000),
+    "Плотва": (23,20,300),
+    "Карп":(13,500,12000),
+    "Граната":(1,-1200)
+}
 bot = Client(
     api_id=config.API_ID,
     api_hash=config.API_HASH,

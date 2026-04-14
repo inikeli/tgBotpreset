@@ -1,3 +1,4 @@
+from pyrogram.emoji import UP_BUTTON
 from pyrogram.types import ReplyKeyboardMarkup
 from pyrogram.types import KeyboardButton
 from pyrogram import emoji
@@ -35,12 +36,21 @@ kb_fish = ReplyKeyboardMarkup(
       resize_keyboard=True
 )
 
-btn_casting = KeyboardButton(f'{emoji.NATIONAL_PARK} Рыбачить')
+btn_casting = KeyboardButton(f'{emoji.NATIONAL_PARK} Забросить удочку')
 btn_catch = KeyboardButton(f'{emoji.HANDBAG} Улов')
 btn_backFishing = KeyboardButton(f'{emoji.BACK_ARROW} Назад')
 kb_gaming = ReplyKeyboardMarkup(
     keyboard=[
         [btn_casting,btn_catch,btn_backFishing],
+    ],
+    resize_keyboard=True
+)
+btn_send = KeyboardButton(f'{emoji.DOLLAR_BANKNOTE} Продать улов')
+btn_upRoad = KeyboardButton(f'{emoji.UP_BUTTON} Улучшить удочку')
+btn_backGame = KeyboardButton(f'{emoji.BACK_ARROW} Назад')
+kb_shop = ReplyKeyboardMarkup(
+    keyboard=[
+        [btn_send,btn_upRoad,btn_backGame],
     ],
     resize_keyboard=True
 )
