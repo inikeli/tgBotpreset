@@ -27,8 +27,15 @@ fish_dictionary = {
     "Сом": (10,500,25000),
     "Плотва": (23,20,300),
     "Карп":(13,500,12000),
-    "Граната":(1,-1200)
+    "Граната":(1,1200,1400)
 }
+fishes = fish_dictionary.keys()
+dropChance = []
+numder = (1,2,3,4,5,6,7,8,9,10)
+weightChaince = [0.34, 0.25, 0.15, 0.1 , 0.07, 0.05 , 0.02 , 0.01 , 0.007 , 0.003]
+for i in fishes:
+    dropChance.append((fish_dictionary[i][0])/100)
+
 bot = Client(
     api_id=config.API_ID,
     api_hash=config.API_HASH,
@@ -54,7 +61,7 @@ async def gpt(bot,message):
 
 @bot.on_message(filters.command("games") | button_filter(keyboard.btn_games))
 async def games(bot,message):
-    await message.reply(f'Тут будут игры',reply_markup=keyboard.kb_games)
+    await message.reply(f'Выберите игру',reply_markup=keyboard.kb_games)
 
 @bot.on_message(filters.command("start"))
 async def start(bot,message):
@@ -79,6 +86,14 @@ async def shop_fishing(bot,message):
 @bot.on_message(button_filter(keyboard.btn_backGame))
 async def backToGame(bot,message):
     await message.reply("Возвращаемся в меню игр",reply_markup=keyboard.kb_games)
+
+@bot.on_message(button_filter(keyboard.btn_casting))
+async def casting(bot,message):
+    chosenFish = random.choices(list(fishes),dropChance)
+    weight = fish_dictionary[chosenFish[0]]
+    step = (weight[2] - weight[1]) / 10
+    weight = random.choices(numder,weightChaince)[0] * step + weight[1] + random.randint(0,100)
+    await message.reply("Вы поймали "+chosenFish[0] + " вес улова " + str(weight))
 
 @bot.on_message(filters.command("maps") | button_filter(keyboard.btn_randomCords))
 async def maps(bot,message):
