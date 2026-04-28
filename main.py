@@ -4,7 +4,24 @@ from pyrogram import Client ,filters
 import keyboard
 from keyboard import kb_fish
 import sqlite3
+from transformers import pipeline
 
+def get_data(message):
+    user_text = message
+    result = botGpt(
+        user_text,
+        max_length = 60,
+        do_sample = True,
+        temperature=0.9
+    )
+    answer = result[0]["generated_text"]
+    return answer
+
+botGpt = pipeline(
+    "text-generation",
+    model="ai-forever/rugpt3small_based_on_gpt2"
+)
+gpt_users = set()
 conn = sqlite3.connect('fishing_game.bd')
 cursor = conn.cursor()
 
@@ -56,8 +73,9 @@ async def profile(bot,message):
     await message.reply(f'Ваш id {message.chat.id} , Ваше имя {message.from_user.first_name}')
 
 @bot.on_message(filters.command("gpt") | button_filter(keyboard.btn_gpt))
-async def gpt(bot,message):
-    await message.reply(f'Тут будет ГПТ')
+async def gpt(bot, message):
+    gpt_users.add(message.chat.id)
+    await message.reply("GPT-режим включён. Напишите запрос нейросети.")
 
 @bot.on_message(filters.command("games") | button_filter(keyboard.btn_games))
 async def games(bot,message):
@@ -113,7 +131,11 @@ async def maps(bot,message):
     await message.reply(preset)
 
 @bot.on_message()
-async def echo(bot,message):
+async def echo(bot, message):
+    if message.chat.id in gpt_users:
+        answer = get_data(message.text)
+        await message.reply(answer)
+        return
     if message.text == "Привет":
         await message.reply("Добро пожаловать в бота")
         await message.reply("Что вы хотите приобрести?")
@@ -122,7 +144,5 @@ async def echo(bot,message):
     elif message.text == "бесплатные робуксы":
         for i in range(100):
             await message.reply("Робукс")
-    elif message.text == "фото":
-        await bot.send_photo(message.chat.id,"https://static.wikia.nocookie.net/dota2_gamepedia/images/c/c0/Pudge_icon.png/revision/latest?cb=20160411211506")
 
 bot.run()
